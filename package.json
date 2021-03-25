@@ -12,6 +12,8 @@
     "@babel/preset-env": "^7.13.12",
     "express": "^4.17.1",
     "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
+    "gulp-csso": "^4.0.1",
     "gulp-sass": "^4.1.0",
     "morgan": "^1.10.0",
     "node-sass": "^5.0.0",
@@ -20,8 +22,8 @@
     "socket.io": "^4.0.0"
   },
   "scripts": {
-    "dev:server": "nodemon --exec babel-node src/server.js",
-    "build:styles": "gulp styles"
+    "dev:server": "nodemon --exec babel-node src/server",
+    "dev:assets": "gulp"
   },
   "devDependencies": {
     "eslint-config-prettier": "^8.1.0",
