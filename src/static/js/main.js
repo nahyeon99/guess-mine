@@ -1,6 +1,13 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.handleNewMessage = void 0;
+
+var _sockets = require("./sockets");
+
 var messages = document.getElementById("jsMessages");
 var sendMsg = document.getElementById("jsSendMsg");
 
@@ -14,15 +21,26 @@ var handleSendMsg = function handleSendMsg(event) {
   event.preventDefault();
   var input = sendMsg.querySelector("input");
   var value = input.value;
+  (0, _sockets.getSocket)().emit(window.events.sendMsg, {
+    message: value
+  });
   input.value = "";
   appendMsg(value);
 };
+
+var handleNewMessage = function handleNewMessage(_ref) {
+  var message = _ref.message,
+      nickname = _ref.nickname;
+  return appendMsg(message, nickname);
+};
+
+exports.handleNewMessage = handleNewMessage;
 
 if (sendMsg) {
   sendMsg.addEventListener("submit", handleSendMsg);
 }
 
-},{}],2:[function(require,module,exports){
+},{"./sockets":5}],2:[function(require,module,exports){
 "use strict";
 
 var _sockets = require("./sockets");
@@ -111,6 +129,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.initSockets = exports.upldateSocket = exports.getSocket = void 0;
 
+var _chat = require("./chat");
+
 var _notifications = require("./notifications");
 
 var socket = null;
@@ -133,8 +153,9 @@ var initSockets = function initSockets(aSocket) {
   upldateSocket(aSocket);
   aSocket.on(events.newUser, _notifications.handleNewUser);
   aSocket.on(events.disconnected, _notifications.handleDisconnected);
+  aSocket.on(events.newMsg, _chat.handleNewMessage);
 };
 
 exports.initSockets = initSockets;
 
-},{"./notifications":4}]},{},[3]);
+},{"./chat":1,"./notifications":4}]},{},[3]);
