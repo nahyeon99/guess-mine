@@ -1,6 +1,30 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 
+var messages = document.getElementById("jsMessages");
+var sendMsg = document.getElementById("jsSendMsg");
+
+var appendMsg = function appendMsg(text, nickname) {
+  var li = document.createElement("li");
+  li.innerHTML = "\n        <span class=\"author ".concat(nickname ? "out" : "self", "\">").concat(nickname ? nickname : "You", ":</span> ").concat(text, "\n    ");
+  messages.appendChild(li);
+};
+
+var handleSendMsg = function handleSendMsg(event) {
+  event.preventDefault();
+  var input = sendMsg.querySelector("input");
+  var value = input.value;
+  input.value = "";
+  appendMsg(value);
+};
+
+if (sendMsg) {
+  sendMsg.addEventListener("submit", handleSendMsg);
+}
+
+},{}],2:[function(require,module,exports){
+"use strict";
+
 var _sockets = require("./sockets");
 
 var body = document.querySelector("body");
@@ -39,30 +63,30 @@ if (loginForm) {
   loginForm.addEventListener("submit", handleFormSubmit);
 }
 
-},{"./sockets":4}],2:[function(require,module,exports){
+},{"./sockets":5}],3:[function(require,module,exports){
 "use strict";
 
 require("./login");
 
-require("./notifications");
-
 require("./sockets");
 
-},{"./login":1,"./notifications":3,"./sockets":4}],3:[function(require,module,exports){
+require("./chat");
+
+},{"./chat":1,"./login":2,"./sockets":5}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.handleDisconnected = exports.handleNewUser = void 0;
-var notifications = document.getElementById("jsNotifications");
+var body = document.querySelector("body");
 
 var fireNotification = function fireNotification(text, color) {
   var notification = document.createElement("div");
   notification.innerText = text;
   notification.style.backgroundColor = color;
   notification.className = "notification";
-  notifications.appendChild(notification);
+  body.appendChild(notification);
 };
 
 var handleNewUser = function handleNewUser(_ref) {
@@ -79,7 +103,7 @@ var handleDisconnected = function handleDisconnected(_ref2) {
 
 exports.handleDisconnected = handleDisconnected;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -113,4 +137,4 @@ var initSockets = function initSockets(aSocket) {
 
 exports.initSockets = initSockets;
 
-},{"./notifications":3}]},{},[2]);
+},{"./notifications":4}]},{},[3]);
