@@ -1,5 +1,15 @@
-const notificatios = document.getElementById("jsNotifications");
+const notifications = document.getElementById("jsNotifications");
 
-export const handleNewUser = ({ nickname }) => {
-  console.log(nickname, "Just Joined");
+const fireNotification = (text, color) => {
+  const notification = document.createElement("div");
+  notification.innerText = text;
+  notification.style.backgroundColor = color;
+  notification.className = "notification";
+  notifications.appendChild(notification);
 };
+
+export const handleNewUser = ({ nickname }) =>
+  fireNotification(`${nickname} just Joined!`, "rgb(0, 122, 255)");
+
+export const handleDisconnected = ({ nickname }) =>
+  fireNotification(`${nickname} just Left!`, "rgb(255, 149, 0)");

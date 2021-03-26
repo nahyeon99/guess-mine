@@ -54,15 +54,30 @@ require("./sockets");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.handleNewUser = void 0;
-var notificatios = document.getElementById("jsNotifications");
+exports.handleDisconnected = exports.handleNewUser = void 0;
+var notifications = document.getElementById("jsNotifications");
+
+var fireNotification = function fireNotification(text, color) {
+  var notification = document.createElement("div");
+  notification.innerText = text;
+  notification.style.backgroundColor = color;
+  notification.className = "notification";
+  notifications.appendChild(notification);
+};
 
 var handleNewUser = function handleNewUser(_ref) {
   var nickname = _ref.nickname;
-  console.log(nickname, "Just Joined");
+  return fireNotification("".concat(nickname, " just Joined!"), "rgb(0, 122, 255)");
 };
 
 exports.handleNewUser = handleNewUser;
+
+var handleDisconnected = function handleDisconnected(_ref2) {
+  var nickname = _ref2.nickname;
+  return fireNotification("".concat(nickname, " just Left!"), "rgb(255, 149, 0)");
+};
+
+exports.handleDisconnected = handleDisconnected;
 
 },{}],4:[function(require,module,exports){
 "use strict";
@@ -93,6 +108,7 @@ var initSockets = function initSockets(aSocket) {
       events = _window.events;
   upldateSocket(aSocket);
   aSocket.on(events.newUser, _notifications.handleNewUser);
+  aSocket.on(events.disconnected, _notifications.handleDisconnected);
 };
 
 exports.initSockets = initSockets;
